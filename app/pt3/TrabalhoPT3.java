@@ -171,3 +171,57 @@ class Data{
     System.out.print(data.getDia()+"/"+data.getMes()+"/"+data.getAno());
   }
 }
+
+class Funcionario{
+    private int cpf;
+    static int funcionarios;
+    private String nome;
+    private Data dtNascimento = new Data();
+    private Data dtAdmissao = new Data(); 
+    private double salario;
+  
+  public void setCpf(int cpf){
+    this.cpf = cpf;
+  }
+  public int getCpf(){
+    return this.cpf;
+  }
+  public void setNome(String nome){
+    this.nome = nome;
+  }
+  public String getNome(){
+    return this.nome;
+  }
+  public void setDtNascimento(int dia, int mes, int ano){
+    this.dtNascimento.setDia(dia);
+    this.dtNascimento.setMes(mes);
+    this.dtNascimento.setAno(ano);
+  }
+  public int[] getDtNascimento(){
+    int[] dtNascimento = {this.dtNascimento.getDia(), this.dtNascimento.getMes(), this.dtNascimento.getAno()};
+    return dtNascimento;
+  }
+  public void setDtAdmissao(int dia, int mes, int ano){
+    this.dtAdmissao.setDia(dia);
+    this.dtAdmissao.setMes(mes);
+    this.dtAdmissao.setAno(ano);
+  }
+  public int[] getDtAdmissao(){
+    int[] dtAdmissao = {this.dtAdmissao.getDia(), this.dtAdmissao.getMes(), this.dtAdmissao.getAno()};
+    return dtAdmissao;
+  }
+   Funcionario(){
+    this.setCpf(0);
+    this.setNome("");
+    this.setDtNascimento(0, 0, 0);
+    this.setDtAdmissao(0, 0, 0);
+    funcionarios++;
+  }
+  Funcionario(int cpf, String nome, int diaNas, int mesNas, int anoNas, int diaAdm, int mesAdm, int anoAdm){
+    this.setCpf(cpf);
+    this.setNome(nome);
+    this.setDtNascimento(diaNas, mesNas, anoNas);
+    this.setDtAdmissao(diaAdm, mesAdm, anoAdm);
+    funcionarios++;
+  }
+}
