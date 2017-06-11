@@ -338,4 +338,14 @@ class Funcionario{
     System.out.print("DATA ADMISSAO: "+this.getDtAdmissao().getDia()+"/"+this.getDtAdmissao().getMes()+"/"+this.getDtAdmissao().getAno());
     System.out.print("SALARIO: "+this.getSalario());
   }
+ public boolean maiorSalario(double salario){
+    boolean salarioMaior = true;
+    if(salario > this.getSalario())
+      salarioMaior = false;
+    return salarioMaior;
+ } 
+ public void pesquisaFuncionario(String nome){
+    if(nome == this.getNome)
+      escreveFuncionario();
+ }
 }
