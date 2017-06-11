@@ -206,22 +206,29 @@ class Funcionario{
     this.dtAdmissao.setMes(mes);
     this.dtAdmissao.setAno(ano);
   }
-  public int[] getDtAdmissao(){
-    int[] dtAdmissao = {this.dtAdmissao.getDia(), this.dtAdmissao.getMes(), this.dtAdmissao.getAno()};
-    return dtAdmissao;
+  public Data getDtAdmissao(){
+    return this.dtAdmissao;
+  }
+  public void setSalario(double salario){
+    this.salario = salario;
+  }
+  public double getSalario(){
+    return this.salario;
   }
    Funcionario(){
     this.setCpf(0);
     this.setNome("");
     this.setDtNascimento(0, 0, 0);
     this.setDtAdmissao(0, 0, 0);
+    this.setSalario(0);
     funcionarios++;
   }
-  Funcionario(int cpf, String nome, int diaNas, int mesNas, int anoNas, int diaAdm, int mesAdm, int anoAdm){
+  Funcionario(int cpf, String nome, int diaNas, int mesNas, int anoNas, int diaAdm, int mesAdm, int anoAdm, double salario){
     this.setCpf(cpf);
     this.setNome(nome);
     this.setDtNascimento(diaNas, mesNas, anoNas);
     this.setDtAdmissao(diaAdm, mesAdm, anoAdm);
+    this.setSalario(salario);
     funcionarios++;
   }
 }
