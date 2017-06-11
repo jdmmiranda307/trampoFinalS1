@@ -2,8 +2,40 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 public class TrabalhoPT3{
    public static void main(String[] args){
-      
+    int option =0;
+    Funcionario[] funcionarios = new Funcionario[100];
+    do{
+      option = menuPrincipal();
+      if(option != 0){
+        switch(option){
+
+        }
+      }
+    }while(opton != 0)
+  
    }
+  public static int menuPrincipal(){
+ Scanner read = new Scanner(System.in);
+ int option = 0; 
+ do{       
+     System.out.print("\nDigite:"
+                       + "\n 0 - Sair do programa"
+                       + "\n 1 - Inserir Funcionario"
+                       + "\n 2 - Visualizar Funcionario"
+                       + "\n 3 - Maior Salario"
+                       + "\n 4 - Buscar funcionario por nome"
+                       + "\n 5 - Ordenar funcionarios por CPF"
+                       + "\n 6 - Buscar funcionarios por CPF"
+                       + "\n 7 - Armazenar funcionarios em disco"
+                       + "\n 8 - Ler funcionarios armazenados em disco para um arranjo"
+                       + "\n 9 - Funcionarios que ganham acima de valor"
+                       + "\n 10 - Funcionarios admitidos depois de data"
+                       + "\n 11 - Funcionarios que aniversariam em determinado mes\n");
+     option = read.nextInt();
+     if(option <0 || option > 5) System.out.print("Opcao Invalida. Selecione novamente\n");
+  }while(option <0 || option > 5);
+  return option;
+}
 }
 
 class Data{
@@ -345,7 +377,19 @@ class Funcionario{
     return salarioMaior;
  } 
  public void pesquisaFuncionario(String nome){
-    if(nome == this.getNome)
+    if(nome == this.getNome())
       escreveFuncionario();
+ }
+  public static void ordenarFuncionario(Funcionario[] funcionarioArray){
+    int j;
+    for(int i = 2; i < funcionarios; i++){
+      j=i-1;
+      funcionarioArray[0] = funcionarioArray[i];
+      while(j>0 && funcionarioArray[0].getCpf() < funcionarioArray[j].getCpf()){
+        funcionarioArray[j+1] = funcionarioArray[j];
+        j--;
+      }
+      funcionarioArray[j+1]=funcionarioArray[0];
+    }
  }
 }
