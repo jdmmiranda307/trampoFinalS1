@@ -8,17 +8,19 @@ public class TrabalhoPT3{
       option = menuPrincipal();
       if(option != 0){
         switch(option){
-
+            case 1:
+              funcionarios[Funcionario.getFuncionarios()] = new Funcionario();
+              funcionarios[Funcionario.getFuncionarios()-1].leFuncionario();
         }
       }
-    }while(opton != 0)
+    }while(option != 0);
   
    }
   public static int menuPrincipal(){
- Scanner read = new Scanner(System.in);
- int option = 0; 
- do{       
-     System.out.print("\nDigite:"
+    Scanner read = new Scanner(System.in);
+    int option = 0; 
+    do{       
+      System.out.print("\nDigite:"
                        + "\n 0 - Sair do programa"
                        + "\n 1 - Inserir Funcionario"
                        + "\n 2 - Visualizar Funcionario"
@@ -33,9 +35,9 @@ public class TrabalhoPT3{
                        + "\n 11 - Funcionarios que aniversariam em determinado mes\n");
      option = read.nextInt();
      if(option <0 || option > 5) System.out.print("Opcao Invalida. Selecione novamente\n");
-  }while(option <0 || option > 5);
-  return option;
-}
+    }while(option <0 || option > 5);
+    return option;
+  }
 }
 
 class Data{
@@ -157,45 +159,45 @@ class Data{
     return objCorrenteEMaisRecente;
   }
   public void leData(){
-  Scanner read = new Scanner(System.in);
-  boolean valido = true;
-  int dia = 0, mes = 0, ano = 0;
-   do{
+    boolean erro = true;
+    do{
        try{
-          valido = true;
+          Scanner read = new Scanner(System.in);
           System.out.print("\n Digite o dia: ");
-          dia = read.nextInt();
+          int dia = read.nextInt();
+          erro = false;
+          this.setDia(dia); 
           }
        catch(InputMismatchException e){
-           System.out.print("\nDia digitado invalido, favor digitar os dia novamente");
-           valido = false;
+           System.out.print("\ndia digitado invalido, favor digitar os dia novamente");
        }
-    }while(!valido);
+    }while(erro);
+    erro = true;
     do{
        try{
-          valido = true;
+          Scanner read = new Scanner(System.in);
           System.out.print("\n Digite o mes: ");
-          mes = read.nextInt();
+          int mes = read.nextInt();
+          erro = false;
+          this.setMes(mes);
           }
        catch(InputMismatchException e){
-           System.out.print("\nMes digitado invalido, favor digitar o mes novamente");
-           valido = false;
+           System.out.print("\nmes digitado invalido, favor digitar os mes novamente");
        }
-    }while(!valido);
+    }while(erro);
+    erro = true;
     do{
        try{
-          valido = true;
+          Scanner read = new Scanner(System.in);
           System.out.print("\n Digite o ano: ");
-          ano = read.nextInt();
+          int ano = read.nextInt();
+          erro = false;
+          this.setAno(ano);
           }
        catch(InputMismatchException e){
-           System.out.print("\nAno digitado invalido, favor digitar o ano novamente");
-           valido = false;
+           System.out.print("\nano digitado invalido, favor digitar os ano novamente");
        }
-    }while(!valido);
-    this.setDia(dia); 
-    this.setMes(mes);
-    this.setAno(ano);
+    }while(erro);
   }
   public void escreveData(Data data){
     System.out.print(data.getDia()+"/"+data.getMes()+"/"+data.getAno());
@@ -204,7 +206,7 @@ class Data{
 
 class Funcionario{
     private int cpf;
-    static int funcionarios;
+    static int funcionarios = 0;
     private String nome;
     private Data dtNascimento = new Data();
     private Data dtAdmissao = new Data(); 
@@ -244,6 +246,9 @@ class Funcionario{
   public double getSalario(){
     return this.salario;
   }
+  public static int getFuncionarios(){
+    return funcionarios;
+  }
    Funcionario(){
     this.setCpf(0);
     this.setNome("");
@@ -261,104 +266,39 @@ class Funcionario{
     funcionarios++;
   }
   public void leFuncionario(){
-    boolean valido = true;
-    Scanner read = new Scanner(System.in);
-    int cpf = 0, diaNas = 0, mesNas = 0, anoNas = 0, diaAdm = 0, mesAdm = 0, anoAdm = 0, ano = 0;
+    boolean erro = true;
     String nome;
-    double salario = 0;
     do{
        try{
-          valido = true;
+          Scanner read = new Scanner(System.in);
           System.out.print("\n Digite o cpf: ");
-          cpf = read.nextInt();
+          int cpf = read.nextInt();
+          erro = false;
           }
        catch(InputMismatchException e){
            System.out.print("\nCPF digitado invalido, favor digitar o cpf novamente");
-           valido = false;
        }
-    }while(!valido);
+    }while(erro);
+    erro = true;
     do{
        try{
-          valido = true;
-          System.out.print("\n Digite o dia de nascimento: ");
-          diaNas = read.nextInt();
-          }
-       catch(InputMismatchException e){
-           System.out.print("\ndia digitado invalido, favor digitar os dia novamente");
-           valido = false;
-       }
-    }while(!valido);
-    do{
-       try{
-          valido = true;
-          System.out.print("\n Digite o mes de nascimento: ");
-          mesNas = read.nextInt();
-          }
-       catch(InputMismatchException e){
-           System.out.print("\nmes digitado invalido, favor digitar os mes novamente");
-           valido = false;
-       }
-    }while(!valido);
-    do{
-       try{
-          valido = true;
-          System.out.print("\n Digite o ano de nascimento: ");
-          anoNas = read.nextInt();
-          }
-       catch(InputMismatchException e){
-           System.out.print("\nano digitado invalido, favor digitar os ano novamente");
-           valido = false;
-       }
-    }while(!valido);
-    do{
-       try{
-          valido = true;
-          System.out.print("\n Digite o dia de admissao: ");
-          diaAdm = read.nextInt();
-          }
-       catch(InputMismatchException e){
-           System.out.print("\ndia digitado invalido, favor digitar os dia novamente");
-           valido = false;
-       }
-    }while(!valido);
-    do{
-       try{
-          valido = true;
-          System.out.print("\n Digite o mes de admissao: ");
-          mesAdm = read.nextInt();
-          }
-       catch(InputMismatchException e){
-           System.out.print("\nmes digitado invalido, favor digitar os mes novamente");
-           valido = false;
-       }
-    }while(!valido);
-    do{
-       try{
-          valido = true;
-          System.out.print("\n Digite o ano de admissao: ");
-          anoAdm = read.nextInt();
-          }
-       catch(InputMismatchException e){
-           System.out.print("\nano digitado invalido, favor digitar os ano novamente");
-           valido = false;
-       }
-    }while(!valido);
-    do{
-       try{
-          valido = true;
+          Scanner read = new Scanner(System.in);
           System.out.print("\n Digite o salario: ");
-          salario = read.nextDouble();
+          double salario = read.nextDouble();
+          erro = false;
           }
        catch(InputMismatchException e){
-           System.out.print("\nasalario digitado invalido, favor digitar o salario novamente");
-           valido = false;
+           System.out.print("\nsalario digitado invalido, favor digitar o salario novamente");
        }
-    }while(!valido);
+    }while(erro);
+    Scanner read = new Scanner(System.in);
     System.out.print("\n Digite o nome: ");
     nome = read.nextLine();
 
     this.setCpf(cpf);
+    System.out.print("\nData de nascimento: ");
     this.dtNascimento.leData();
+    System.out.print("\nData de admissao: ");
     this.dtAdmissao.leData();
     this.setSalario(salario);
     this.setNome(nome);
