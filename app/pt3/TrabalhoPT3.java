@@ -331,4 +331,11 @@ class Funcionario{
     this.setSalario(salario);
     this.setNome(nome);
   }
+  public void escreveFuncionario(){
+    System.out.print("CPF: "+this.getCpf());
+    System.out.print("NOME: "+this.getNome());
+    System.out.print("DATA NASCIMENTO: "+this.getDtNascimento().getDia()+"/"+this.getDtNascimento().getMes()+"/"+this.getDtNascimento().getAno());
+    System.out.print("DATA ADMISSAO: "+this.getDtAdmissao().getDia()+"/"+this.getDtAdmissao().getMes()+"/"+this.getDtAdmissao().getAno());
+    System.out.print("SALARIO: "+this.getSalario());
+  }
 }
