@@ -63,10 +63,10 @@ public class TrabalhoPT3{
               break;
             case 7:
               escreveArquivo(funcionarios);
+              escreverNFuncionarios();
               break;
             case 8:
-              Funcionario[] fun2 = new Funcionario[100];
-              leArquivo(fun2);
+              leArquivo(funcionarios);
               break;
             case 9:
               System.out.println("Digite o valor a ser comparado: ");
@@ -112,13 +112,31 @@ public class TrabalhoPT3{
       }
     }
   }
+   public static int lerNumero(String nomeArq){
+      int funcs = 0;
+     try{
+         InputStream is = new FileInputStream(nomeArq);
+         InputStreamReader isr = new InputStreamReader(is);
+         BufferedReader br = new BufferedReader(isr);
+         funcs = Integer.parseInt(br.readLine());; 
+         br.close();
+         return funcs;
+      }
+      catch(IOException ioexception){
+         System.err.println(ioexception);
+      }
+      return funcs;
+   }
   public static void leArquivo(Funcionario[] aF){
     ObjectInputStream input;
+    Funcionario aux = new Funcionario();
     try{
       input= new ObjectInputStream(
       new FileInputStream("funcionarios.dat"));
-      for(int i = 0; i < aF.length; i++){
-        aF[i] = (Funcionario)input.readObject();  
+      for(int i = 0; i < lerNumero("nFuncionarios.txt"); i++){
+        aux = (Funcionario)input.readObject();  
+        aF[i] = new Funcionario(aux.getCpf(), aux.getNome(), aux.getDtNascimento().getDia(), aux.getDtNascimento().getMes(), aux.getDtNascimento().getAno(), aux.getDtAdmissao().getDia(), aux.getDtAdmissao().getMes(), aux.getDtAdmissao().getAno(), aux.getSalario());
+        Funcionario.funcionarios--;
       }
       input.close();
     }
@@ -131,14 +149,32 @@ public class TrabalhoPT3{
     try{
       output= new ObjectOutputStream(
       new FileOutputStream("funcionarios.dat"));
-      for(int i = 0; i < Funcionario.getFuncionarios(); i++){  
-        output.writeObject(aF[i]);  
-      }
+        for(int i = 0; i < Funcionario.getFuncionarios(); i++){  
+          output.writeObject(aF[i]);  
+        }
       output.close();
     }
     catch(Exception e){
       System.err.println("Erro ao manipular arquivo");
     }
+  }
+  public  static  void escreverNFuncionarios(){
+    File nFun = new File("nFuncionarios.txt");
+    try{
+         if(nFun.createNewFile()){
+            System.out.println("Foi criado o arquivo ");
+         }
+      }
+      catch(IOException ioException){
+         System.out.print(ioException);
+      }
+      try(FileWriter fw = new FileWriter(nFun)){
+      fw.write(Funcionario.getFuncionarios() +"\n");
+      fw.flush();
+      }
+      catch(IOException ioException){
+         System.out.print(ioException);
+      }
   }
   public static long leLong(){
     boolean valido = true;
@@ -213,7 +249,7 @@ public class TrabalhoPT3{
   }
 }
 
-class Data{
+class Data implements Serializable{
   private int dia, mes, ano;
   int data;
   
