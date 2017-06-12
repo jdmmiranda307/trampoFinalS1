@@ -2,7 +2,9 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 public class TrabalhoPT3{
    public static void main(String[] args){
+    Scanner read = new Scanner(System.in);
     int option =0;
+    int f = 0;
     Funcionario[] funcionarios = new Funcionario[100];
     do{
       option = menuPrincipal();
@@ -11,11 +13,82 @@ public class TrabalhoPT3{
             case 1:
               funcionarios[Funcionario.getFuncionarios()] = new Funcionario();
               funcionarios[Funcionario.getFuncionarios()-1].leFuncionario();
+              break;
+            case 2:
+              for(int i = 0; i < Funcionario.getFuncionarios(); i++){
+                try{
+                funcionarios[i].escreveFuncionario();
+                }
+                catch(Exception e){
+                  System.out.println("Algo inexperado aconteceu!");
+                }
+              }
+              break;
+            case 3:
+              System.out.print("Digite qual o funcionario que sera comparado o salario: ");
+              f = leInteiro();
+              System.out.print("Digite o valor a ser comparado com o salario do funcionario escolhido: ");
+              double valor = leReal();
+              try{
+                if(funcionarios[f-1].maiorSalario(valor))
+                  System.out.print("O salario do funcionario e maior que o informado");
+                else
+                  System.out.print("O salario informado e maior que o do funcionario");
+              }
+              catch(Exception e){
+                System.out.print("Funcionario inexistente.");
+              }
+              break;
+            case 4:
+              String nome;
+              System.out.println("Digite o nome do funcionario: ");
+              nome = read.nextLine();
+              for(int i = 0; i < Funcionario.getFuncionarios(); i++){
+                funcionarios[i].pesquisaFuncionario(nome);
+              }
+              break;
+            case 5:
+                Funcionario.ordenarFuncionario(funcionarios);
+                break;
+
+
         }
       }
     }while(option != 0);
   
    }
+  public static int leInteiro(){
+    boolean valido = true;
+    int inteiro = 0;
+    do{
+       try{
+          valido = true;
+          Scanner read = new Scanner(System.in);
+          inteiro = read.nextInt();
+          }
+       catch(InputMismatchException e){
+           System.out.print("\nvalor invalido, favor digitar novamente: ");
+           valido = false;
+       }
+    }while(!valido);
+    return inteiro;
+  }
+   public static double leReal(){
+    boolean valido = true;
+    double real = 0;
+    do{
+       try{
+          valido = true;
+          Scanner read = new Scanner(System.in);
+          real = read.nextDouble();
+          }
+       catch(InputMismatchException e){
+           System.out.print("\nvalor invalido, favor digitar novamente: ");
+           valido = false;
+       }
+    }while(!valido);
+    return real;
+  }
   public static int menuPrincipal(){
     Scanner read = new Scanner(System.in);
     int option = 0; 
@@ -274,6 +347,7 @@ class Funcionario{
           System.out.print("\n Digite o cpf: ");
           int cpf = read.nextInt();
           erro = false;
+          this.setCpf(cpf);
           }
        catch(InputMismatchException e){
            System.out.print("\nCPF digitado invalido, favor digitar o cpf novamente");
@@ -286,6 +360,7 @@ class Funcionario{
           System.out.print("\n Digite o salario: ");
           double salario = read.nextDouble();
           erro = false;
+          this.setSalario(salario);
           }
        catch(InputMismatchException e){
            System.out.print("\nsalario digitado invalido, favor digitar o salario novamente");
@@ -295,20 +370,21 @@ class Funcionario{
     System.out.print("\n Digite o nome: ");
     nome = read.nextLine();
 
-    this.setCpf(cpf);
+    
     System.out.print("\nData de nascimento: ");
     this.dtNascimento.leData();
     System.out.print("\nData de admissao: ");
     this.dtAdmissao.leData();
-    this.setSalario(salario);
+    
     this.setNome(nome);
   }
   public void escreveFuncionario(){
-    System.out.print("CPF: "+this.getCpf());
-    System.out.print("NOME: "+this.getNome());
-    System.out.print("DATA NASCIMENTO: "+this.getDtNascimento().getDia()+"/"+this.getDtNascimento().getMes()+"/"+this.getDtNascimento().getAno());
-    System.out.print("DATA ADMISSAO: "+this.getDtAdmissao().getDia()+"/"+this.getDtAdmissao().getMes()+"/"+this.getDtAdmissao().getAno());
-    System.out.print("SALARIO: "+this.getSalario());
+    System.out.println("CPF: "+this.getCpf());
+    System.out.println("NOME: "+this.getNome());
+    System.out.println("DATA NASCIMENTO: "+this.getDtNascimento().getDia()+"/"+this.getDtNascimento().getMes()+"/"+this.getDtNascimento().getAno());
+    System.out.println("DATA ADMISSAO: "+this.getDtAdmissao().getDia()+"/"+this.getDtAdmissao().getMes()+"/"+this.getDtAdmissao().getAno());
+    System.out.println("SALARIO: "+this.getSalario());
+    System.out.println("");
   }
  public boolean maiorSalario(double salario){
     boolean salarioMaior = true;
@@ -317,19 +393,27 @@ class Funcionario{
     return salarioMaior;
  } 
  public void pesquisaFuncionario(String nome){
-    if(nome == this.getNome())
-      escreveFuncionario();
+    if(new String(this.getNome()).equals(nome))   escreveFuncionario();
+    else System.out.println("Funcionario inexistente");
  }
   public static void ordenarFuncionario(Funcionario[] funcionarioArray){
-    int j;
-    for(int i = 2; i < funcionarios; i++){
-      j=i-1;
-      funcionarioArray[0] = funcionarioArray[i];
-      while(j>0 && funcionarioArray[0].getCpf() < funcionarioArray[j].getCpf()){
-        funcionarioArray[j+1] = funcionarioArray[j];
-        j--;
+    int aux;
+    int posMaior;
+    for(int j=Funcionario.getFuncionarios(); j>1; j--){
+      posMaior=0;
+      for(int i=1; i<j; i++){
+        if(funcionarioArray[i].getCpf()>funcionarioArray[posMaior].getCpf()){
+          posMaior=i;
+        }
       }
-      funcionarioArray[j+1]=funcionarioArray[0];
+      troca(funcionarioArray, j-1, posMaior);
     }
- }
+  }
+  public static void troca(Funcionario[] a, int pos, int posM){
+    Funcionario aux = new Funcionario();
+    aux = a[pos];
+    a[pos] = a[posM];
+    a[posM] = aux;
+    funcionarios--;
+  }
 }
