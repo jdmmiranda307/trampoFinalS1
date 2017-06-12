@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.*;
 import java.util.InputMismatchException;
 public class TrabalhoPT3{
    public static void main(String[] args){
@@ -20,7 +21,7 @@ public class TrabalhoPT3{
                 funcionarios[i].escreveFuncionario();
                 }
                 catch(Exception e){
-                  System.out.println("Algo inexperado aconteceu!");
+                  System.out.println("Algo inesperado aconteceu!");
                 }
               }
               break;
@@ -48,15 +49,114 @@ public class TrabalhoPT3{
               }
               break;
             case 5:
-                Funcionario.ordenarFuncionario(funcionarios);
-                break;
-
-
+              Funcionario.ordenarFuncionario(funcionarios);
+              break;
+            case 6:
+              System.out.println("Digite o CPF do funcionario: ");
+              long cpf = leLong();
+              try{
+                Funcionario.pesquisaFuncionarioCPF(funcionarios, 0, Funcionario.getFuncionarios(), cpf);
+              }
+              catch(Exception e){
+                System.out.println("Ocorreu algo de errado no sistema.");
+              }
+              break;
+            case 7:
+              escreveArquivo(funcionarios);
+              break;
+            case 8:
+              Funcionario[] fun2 = new Funcionario[100];
+              leArquivo(fun2);
+              break;
+            case 9:
+              System.out.println("Digite o valor a ser comparado: ");
+              acimaValor(funcionarios, leReal());
+              break;
+            case 10:
+              System.out.println("Digite o dia a ser comparado: ");
+              int dia =leInteiro();
+              System.out.println("Digite o mes a ser comparado: ");
+              int mes =leInteiro();
+              System.out.println("Digite o ano a ser comparado: ");
+              int ano =leInteiro();
+              Data date = new Data(dia, mes, ano);
+              admitidosDepois(date, funcionarios);
+              break;
+            case 11:
+              System.out.println("Digite o mes que voce desaja buscar: ");
+              int mesAniversario =leInteiro();
+              aniversariamMes(funcionarios, mesAniversario);
+              break;
         }
       }
     }while(option != 0);
-  
-   }
+  }
+  public static void aniversariamMes(Funcionario[] aF, int mes){
+    for(int i = 0; i < Funcionario.getFuncionarios(); i++){
+      if(aF[i].getDtNascimento().getMes() == mes){
+        aF[i].escreveFuncionario();
+      }
+    }
+  }
+  public static void admitidosDepois(Data d, Funcionario[] aF){
+    for(int i = 0; i < Funcionario.getFuncionarios(); i++){
+      if(aF[i].getDtAdmissao().objCorrenteEMaisRecente(d.getDia(), d.getMes(), d.getAno())){
+        aF[i].escreveFuncionario();
+      }
+    }
+  }
+  public static void acimaValor(Funcionario[] aF, double valor){
+    for(int i = 0; i < Funcionario.getFuncionarios(); i++){
+      if(aF[i].getSalario() > valor){
+        aF[i].escreveFuncionario();
+      }
+    }
+  }
+  public static void leArquivo(Funcionario[] aF){
+    ObjectInputStream input;
+    try{
+      input= new ObjectInputStream(
+      new FileInputStream("funcionarios.dat"));
+      for(int i = 0; i < aF.length; i++){
+        aF[i] = (Funcionario)input.readObject();  
+      }
+      input.close();
+    }
+    catch(Exception e){
+      System.err.println("Erro ao manipular arquivo");
+    }
+  }
+  public static void escreveArquivo(Funcionario[] aF){
+    ObjectOutputStream output;
+    try{
+      output= new ObjectOutputStream(
+      new FileOutputStream("funcionarios.dat"));
+      for(int i = 0; i < Funcionario.getFuncionarios(); i++){  
+        output.writeObject(aF[i]);  
+      }
+      output.close();
+    }
+    catch(Exception e){
+      System.err.println("Erro ao manipular arquivo");
+    }
+  }
+  public static long leLong(){
+    boolean valido = true;
+    long longo = 0;
+    do{
+       try{
+          valido = true;
+          Scanner read = new Scanner(System.in);
+          longo = read.nextLong();
+          }
+       catch(InputMismatchException e){
+           System.out.print("\nvalor invalido, favor digitar novamente: ");
+           valido = false;
+       }
+    }while(!valido);
+    return longo;
+
+  }
   public static int leInteiro(){
     boolean valido = true;
     int inteiro = 0;
@@ -107,8 +207,8 @@ public class TrabalhoPT3{
                        + "\n 10 - Funcionarios admitidos depois de data"
                        + "\n 11 - Funcionarios que aniversariam em determinado mes\n");
      option = read.nextInt();
-     if(option <0 || option > 5) System.out.print("Opcao Invalida. Selecione novamente\n");
-    }while(option <0 || option > 5);
+     if(option <0 || option > 11) System.out.print("Opcao Invalida. Selecione novamente\n");
+    }while(option <0 || option > 11);
     return option;
   }
 }
@@ -277,18 +377,18 @@ class Data{
   }
 }
 
-class Funcionario{
-    private int cpf;
+class Funcionario implements Serializable{
+    private long cpf;
     static int funcionarios = 0;
     private String nome;
     private Data dtNascimento = new Data();
     private Data dtAdmissao = new Data(); 
     private double salario;
   
-  public void setCpf(int cpf){
+  public void setCpf(long cpf){
     this.cpf = cpf;
   }
-  public int getCpf(){
+  public long getCpf(){
     return this.cpf;
   }
   public void setNome(String nome){
@@ -330,7 +430,7 @@ class Funcionario{
     this.setSalario(0);
     funcionarios++;
   }
-  Funcionario(int cpf, String nome, int diaNas, int mesNas, int anoNas, int diaAdm, int mesAdm, int anoAdm, double salario){
+  Funcionario(long cpf, String nome, int diaNas, int mesNas, int anoNas, int diaAdm, int mesAdm, int anoAdm, double salario){
     this.setCpf(cpf);
     this.setNome(nome);
     this.setDtNascimento(diaNas, mesNas, anoNas);
@@ -345,7 +445,7 @@ class Funcionario{
        try{
           Scanner read = new Scanner(System.in);
           System.out.print("\n Digite o cpf: ");
-          int cpf = read.nextInt();
+          long cpf = read.nextLong();
           erro = false;
           this.setCpf(cpf);
           }
@@ -396,24 +496,41 @@ class Funcionario{
     if(new String(this.getNome()).equals(nome))   escreveFuncionario();
     else System.out.println("Funcionario inexistente");
  }
-  public static void ordenarFuncionario(Funcionario[] funcionarioArray){
+  public static void ordenarFuncionario(Funcionario[] aF){
     int aux;
     int posMaior;
     for(int j=Funcionario.getFuncionarios(); j>1; j--){
       posMaior=0;
       for(int i=1; i<j; i++){
-        if(funcionarioArray[i].getCpf()>funcionarioArray[posMaior].getCpf()){
+        if(aF[i].getCpf()>aF[posMaior].getCpf()){
           posMaior=i;
         }
       }
-      troca(funcionarioArray, j-1, posMaior);
+      troca(aF, j-1, posMaior);
     }
   }
-  public static void troca(Funcionario[] a, int pos, int posM){
+  public static void troca(Funcionario[] aF, int pos, int posM){
     Funcionario aux = new Funcionario();
-    aux = a[pos];
-    a[pos] = a[posM];
-    a[posM] = aux;
+    aux = aF[pos];
+    aF[pos] = aF[posM];
+    aF[posM] = aux;
     funcionarios--;
+  }
+  public static void pesquisaFuncionarioCPF(Funcionario[] aF, int min, int max, long cpf){
+    ordenarFuncionario(aF);
+    int metade = (min + max)/2;
+    try{
+      if (min > max)
+        System.out.println("CPF nao encontrado na lista de funcionarios ");
+      else if(aF[metade].getCpf() == cpf)
+        aF[metade].escreveFuncionario();
+      else if(aF[metade].getCpf() < cpf)
+        pesquisaFuncionarioCPF(aF, metade+1, max, cpf);
+      else
+        pesquisaFuncionarioCPF(aF, min, metade-1, cpf);
+    }
+    catch(Exception e){
+      System.out.println("Funcionario nao encontrado");
+    }
   }
 }
