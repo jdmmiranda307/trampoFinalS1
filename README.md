@@ -1,2 +1,2 @@
-# trampoFinalS1
-Trampo final do primeiro semestre de CC
+# trabalhoFinalS1
+Trabalho final do primeiro semestre de CC
